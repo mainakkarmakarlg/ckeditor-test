@@ -1,103 +1,104 @@
-import Image from "next/image";
+// "use client";
+
+// import { useState } from "react";
+// import CkEditor from "@/components/custom-editor";
+
+// export default function Home() {
+//   const [content, setContent] = useState<string>("");
+//   const [text, setText] = useState("");
+//   const [options, setOptions] = useState([]);
+
+//   const handleTextChange = (html: string) => {
+//     setText(html);
+//     console.log("Live editor HTML:", html);
+//   };
+
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setContent(text);
+//     console.log("Final submitted content:", text);
+//   };
+
+//   return (
+//     <div className="p-6 space-y-10">
+//       <form className="w-full space-y-4" onSubmit={handleSubmit}>
+//         <CkEditor html={text} setHtml={handleTextChange} />
+//         <button
+//           type="submit"
+//           className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
+//         >
+//           Submit
+//         </button>
+//       </form>
+
+//       {content && (
+//         <div className="mt-8">
+//           <h2 className="text-xl font-semibold mb-2">Preview</h2>
+
+//           {/* Raw HTML output preview */}
+//           <h3 className="font-medium mb-1">Raw HTML Output:</h3>
+//           <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto max-w-full">
+//             {content}
+//           </pre>
+
+//           {/* Rendered HTML Output */}
+//           <h3 className="font-medium mt-4 mb-1">Rendered Output:</h3>
+//           <div
+//             className="border border-gray-300 p-6 rounded bg-white shadow max-w-full overflow-x-auto"
+//             dangerouslySetInnerHTML={{ __html: content }}
+//           />
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+"use client";
+
+import { useState } from "react";
+import CkEditor from "@/components/custom-editor";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [text, setText] = useState("");
+  const [content, setContent] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleTextChange = (html: string) => {
+    setText(html);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setContent(text);
+    console.log("Submitted content:", text);
+  };
+
+  return (
+    <div className="p-6 space-y-10">
+      <form className="w-full space-y-4" onSubmit={handleSubmit}>
+        <CkEditor html={text} setHtml={handleTextChange} />
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
+        >
+          Submit
+        </button>
+      </form>
+
+      {text && (
+        <div className="mt-10">
+          <h2 className="text-xl font-semibold mb-2">Live Preview</h2>
+          <h3 className="text-sm font-medium mb-1">Raw HTML Output:</h3>
+          <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto max-w-full whitespace-pre-wrap">
+            {text}
+          </pre>
+
+          <h3 className="text-sm font-medium mt-4 mb-1">Rendered Output:</h3>
+          <div
+            className="border border-gray-300 p-6 rounded bg-white shadow max-w-full overflow-x-auto"
+            dangerouslySetInnerHTML={{ __html: text }}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
     </div>
   );
 }
