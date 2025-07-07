@@ -81,9 +81,7 @@
 // import "ckeditor5/ckeditor5.css";
 // import "../app/App.css";
 
-// // const LICENSE_KEY =
-// //   "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTMxNDIzOTksImp0aSI6IjJhY2Y5MDEzLTYwM2YtNDM4Yi1iZDllLTBiY2NkYmQ2NmE3ZSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjQzNjY1YzFjIn0.ax52kjOujabyDXmkdW-aV0xEHg5bMUcloUD72Lt1IP6HM9eCcDokvCF9EX8cVtvef3IZOiNyMC7J_HrofzRppA";
-
+// // const LICENSE_KEY = process.env.CKEDITOR_LICENSE_KEY
 // export default function ClientSideCustomEditor({
 //   onChange,
 // }: {
