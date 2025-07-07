@@ -87,6 +87,7 @@ export default function Home() {
       {text && (
         <div className="mt-10">
           <h2 className="text-xl font-semibold mb-2">Live Preview</h2>
+
           <h3 className="text-sm font-medium mb-1">Raw HTML Output:</h3>
           <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto max-w-full whitespace-pre-wrap">
             {text}

@@ -1,5 +1,4 @@
-// components/client-side-custom-editor.js
-"use client"; // Required only in App Router.
+"use client";
 
 import dynamic from "next/dynamic";
 

@@ -406,21 +406,20 @@
 //     </div>
 //   );
 // }
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 
 import {
   ClassicEditor,
-  AccessibilityHelp,
   Alignment,
   Autoformat,
   AutoImage,
-  AutoLink,
   Autosave,
   BalloonToolbar,
+  Base64UploadAdapter,
   BlockQuote,
-  BlockToolbar,
   Bold,
   Code,
   CodeBlock,
@@ -430,7 +429,6 @@ import {
   FontColor,
   FontFamily,
   FontSize,
-  FullPage,
   GeneralHtmlSupport,
   Heading,
   Highlight,
@@ -440,6 +438,7 @@ import {
   ImageBlock,
   ImageCaption,
   ImageInline,
+  ImageInsert,
   ImageInsertViaUrl,
   ImageResize,
   ImageStyle,
@@ -453,16 +452,13 @@ import {
   LinkImage,
   List,
   ListProperties,
-  Markdown,
   MediaEmbed,
   Mention,
   PageBreak,
   Paragraph,
-  PasteFromMarkdownExperimental,
   PasteFromOffice,
+  PlainTableOutput,
   RemoveFormat,
-  SelectAll,
-  ShowBlocks,
   SourceEditing,
   SpecialCharacters,
   SpecialCharactersArrows,
@@ -481,16 +477,15 @@ import {
   TableColumnResize,
   TableProperties,
   TableToolbar,
-  TextPartLanguage,
   TextTransformation,
   TodoList,
   Underline,
-  Undo,
+  WordCount,
 } from "ckeditor5";
 
 import "ckeditor5/ckeditor5.css";
 
-// import "../App.css";
+import "../app/App.css";
 
 export default function CkEditor({ html, setHtml }: any) {
   const editorContainerRef = useRef(null);
@@ -514,10 +509,8 @@ export default function CkEditor({ html, setHtml }: any) {
         "redo",
         "|",
         "sourceEditing",
-        "showBlocks",
         "findAndReplace",
-        "selectAll",
-        "textPartLanguage",
+        "fullscreen",
         "|",
         "heading",
         "style",
@@ -536,13 +529,16 @@ export default function CkEditor({ html, setHtml }: any) {
         "code",
         "removeFormat",
         "|",
+        "emoji",
         "specialCharacters",
         "horizontalLine",
         "pageBreak",
         "link",
-        "insertImageViaUrl",
+        "bookmark",
+        "insertImage",
         "mediaEmbed",
         "insertTable",
+        "insertTableLayout",
         "highlight",
         "blockQuote",
         "codeBlock",
@@ -555,21 +551,17 @@ export default function CkEditor({ html, setHtml }: any) {
         "todoList",
         "outdent",
         "indent",
-        "|",
-        "accessibilityHelp",
       ],
-      shouldNotGroupWhenFull: true,
+      shouldNotGroupWhenFull: false,
     },
     plugins: [
-      AccessibilityHelp,
       Alignment,
       Autoformat,
       AutoImage,
-      AutoLink,
       Autosave,
       BalloonToolbar,
+      Base64UploadAdapter,
       BlockQuote,
-      BlockToolbar,
       Bold,
       Code,
       CodeBlock,
@@ -579,7 +571,6 @@ export default function CkEditor({ html, setHtml }: any) {
       FontColor,
       FontFamily,
       FontSize,
-      FullPage,
       GeneralHtmlSupport,
       Heading,
       Highlight,
@@ -589,6 +580,7 @@ export default function CkEditor({ html, setHtml }: any) {
       ImageBlock,
       ImageCaption,
       ImageInline,
+      ImageInsert,
       ImageInsertViaUrl,
       ImageResize,
       ImageStyle,
@@ -602,16 +594,14 @@ export default function CkEditor({ html, setHtml }: any) {
       LinkImage,
       List,
       ListProperties,
-      Markdown,
+
       MediaEmbed,
       Mention,
       PageBreak,
       Paragraph,
-      PasteFromMarkdownExperimental,
       PasteFromOffice,
+      PlainTableOutput,
       RemoveFormat,
-      SelectAll,
-      ShowBlocks,
       SourceEditing,
       SpecialCharacters,
       SpecialCharactersArrows,
@@ -630,43 +620,36 @@ export default function CkEditor({ html, setHtml }: any) {
       TableColumnResize,
       TableProperties,
       TableToolbar,
-      TextPartLanguage,
       TextTransformation,
       TodoList,
       Underline,
-      Undo,
+      WordCount,
     ],
     balloonToolbar: [
       "bold",
       "italic",
       "|",
       "link",
+      "insertImage",
       "|",
       "bulletedList",
       "numberedList",
     ],
-    blockToolbar: [
-      "fontSize",
-      "fontColor",
-      "fontBackgroundColor",
-      "|",
-      "bold",
-      "italic",
-      "|",
-      "link",
-      "insertTable",
-      "|",
-      "bulletedList",
-      "numberedList",
-      "outdent",
-      "indent",
-    ],
-    fontFamily: {
-      supportAllValues: true,
-    },
+    fontFamily: { supportAllValues: true },
     fontSize: {
       options: [10, 12, 14, "default", 18, 20, 22],
       supportAllValues: true,
+    },
+    fullscreen: {
+      onEnterCallback: (container) =>
+        container.classList.add(
+          "editor-container",
+          "editor-container_classic-editor",
+          "editor-container_include-style",
+          "editor-container_include-word-count",
+          "editor-container_include-fullscreen",
+          "main-container"
+        ),
     },
     heading: {
       options: [
@@ -714,14 +697,7 @@ export default function CkEditor({ html, setHtml }: any) {
       ],
     },
     htmlSupport: {
-      allow: [
-        {
-          name: /^.*$/,
-          styles: true,
-          attributes: true,
-          classes: true,
-        },
-      ],
+      allow: [{ name: /^.*$/, styles: true, attributes: true, classes: true }],
     },
     image: {
       toolbar: [
@@ -736,6 +712,7 @@ export default function CkEditor({ html, setHtml }: any) {
       ],
     },
     initialData: html,
+    licenseKey: "<YOUR_LICENSE_KEY>",
     link: {
       addTargetToExternalLinks: true,
       defaultProtocol: "https://",
@@ -743,9 +720,7 @@ export default function CkEditor({ html, setHtml }: any) {
         toggleDownloadable: {
           mode: "manual",
           label: "Downloadable",
-          attributes: {
-            download: "file",
-          },
+          attributes: { download: "file" },
         },
       },
     },
@@ -760,9 +735,7 @@ export default function CkEditor({ html, setHtml }: any) {
       feeds: [
         {
           marker: "@",
-          feed: [
-            /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
-          ],
+          feed: [], // optionally fill with suggestions
         },
       ],
     },
@@ -772,51 +745,22 @@ export default function CkEditor({ html, setHtml }: any) {
     placeholder: "Enter the question",
     style: {
       definitions: [
+        { name: "Article category", element: "h3", classes: ["category"] },
+        { name: "Title", element: "h2", classes: ["document-title"] },
+        { name: "Subtitle", element: "h3", classes: ["document-subtitle"] },
+        { name: "Info box", element: "p", classes: ["info-box"] },
         {
-          name: "Article category",
-          element: "h3",
-          classes: ["category"],
+          name: "CTA Link Primary",
+          element: "a",
+          classes: ["button", "button--green"],
         },
         {
-          name: "Title",
-          element: "h2",
-          classes: ["document-title"],
+          name: "CTA Link Secondary",
+          element: "a",
+          classes: ["button", "button--black"],
         },
-        {
-          name: "Subtitle",
-          element: "h3",
-          classes: ["document-subtitle"],
-        },
-        {
-          name: "Info box",
-          element: "p",
-          classes: ["info-box"],
-        },
-        {
-          name: "Side quote",
-          element: "blockquote",
-          classes: ["side-quote"],
-        },
-        {
-          name: "Marker",
-          element: "span",
-          classes: ["marker"],
-        },
-        {
-          name: "Spoiler",
-          element: "span",
-          classes: ["spoiler"],
-        },
-        {
-          name: "Code (dark)",
-          element: "pre",
-          classes: ["fancy-code", "fancy-code-dark"],
-        },
-        {
-          name: "Code (bright)",
-          element: "pre",
-          classes: ["fancy-code", "fancy-code-bright"],
-        },
+        { name: "Marker", element: "span", classes: ["marker"] },
+        { name: "Spoiler", element: "span", classes: ["spoiler"] },
       ],
     },
     table: {
